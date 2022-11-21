@@ -1,0 +1,81 @@
+﻿@page "/authorization"
+@inject NavigationManager Navigation
+@inject UserService UserService
+@using BlazorControlWork.Data
+
+  <section class="vh-100 bg-image"
+  style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+              <form>
+                <div class="form-outline mb-4">
+                  <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind="@Login" />
+                  <label class="form-label" for="form3Example1cg">Login</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" @bind="@Password"/>
+                  <label class="form-label" for="form3Example4cg">Password</label>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <button type="button"
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"  @onclick="AuthorizatioMethod">Sign in</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (CheckError)
+{
+    <div class="layer1">
+        <h6>@strError</h6>
+    </div>
+}
+
+
+@code {
+    private string Login;
+    private string Password;
+
+    private bool CheckError;
+    private string strError = "Неизвестная ошибка";
+
+    private void AuthorizatioMethod()
+    {
+        User user = MongoExamples.Find(Login);
+        if (user != null)
+        {
+            if (Password == user.Password)
+            {
+                UserService.user = user;
+                UserService.authorizationCheck = true;
+                Navigation.NavigateTo("/profil");
+            }
+            else
+            {
+                CheckError = true;
+                strError = "Неверный пароль";
+            }
+
+        }
+        else
+        {
+            CheckError = true;
+            strError = "Пользователя с таким логином не найдено";
+        }
+    }
+}

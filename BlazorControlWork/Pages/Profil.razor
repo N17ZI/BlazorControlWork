@@ -1,0 +1,76 @@
+﻿@page "/profil"
+@using BlazorControlWork.Data
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+@inject IWebHostEnvironment Environment
+
+
+<div>
+    @if (UserService.user.pathImg != string.Empty)
+    {
+        <img src="@UserService.user.pathImg" class="fit-picture" />
+    }
+    else
+    {
+        <img src="@srcPath" class="fit-picture" />
+    }
+    <br />
+    <label>Name:</label>
+    <label>@UserService.user.Name</label>
+    <br />
+    <label>Login:</label>
+    <label>@UserService.user.Login</label>
+    <br />
+    <label>Email:</label>
+    <label>@UserService.user.Email</label>
+    <br />
+    <button @onclick="LogOut">Log out</button>
+    <br />
+    <InputFile OnChange="@LoadFiles"/>
+    <br />
+    <label>@strException</label>
+</div>
+
+
+@code {
+    string strException;
+    string srcPath;
+
+    private void LogOut()
+    {
+        UserService.authorizationCheck = false;
+        NavigationManager.NavigateTo("/authorization");
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var path = Path.Combine(Environment.ContentRootPath, "wwwroot", "images" , e.File.Name);
+            using (FileStream fs = new(path, FileMode.Create))
+            {
+                await e.File.OpenReadStream(1000000000).CopyToAsync(fs);
+            }
+            FileSystemService.UploadImageToDb(e.File.Name, path);
+            srcPath = "images\\" + $"{e.File.Name}";
+            UserService.user.pathImg = srcPath;
+            MongoExamples.ReplaceByName(UserService.user.Login, UserService.user);
+        }
+        catch (Exception ex)
+        {
+            strException = $"{ex.Message}";
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (UserService.user.pathImg != null)
+        {
+            var path = Path.Combine(Environment.ContentRootPath, "wwwroot", UserService.user.pathImg);
+            if (!File.Exists(path))
+            {
+                FileSystemService.DownloadToLocal(UserService.user, path);
+            }
+        }
+    }
+}
