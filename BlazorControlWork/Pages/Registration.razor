@@ -43,6 +43,14 @@
                   <label class="form-label" for="form3Example4cdg">Repeat your password</label>
                 </div>
 
+                  <label class="form-label" for="form3Example3cg">Your Email</label>
+                  <p>
+                  <select name="sss" type="text" @bind="Specialist">
+                            <option text="Проектировщик">Проектировщик</option>
+                            <option text="Застройщик">Застройщик</option>
+                            <option text="Заказщик">Заказщик</option>
+                  </select>
+                  </p>
                 <div class="d-flex justify-content-center">
                   <button type="button"
                     class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"  @onclick="@CreateUsers">Register</button>
@@ -68,12 +76,13 @@
     private string Login = "";
     private string Password = "";
     private string Password2 = "";
+    private string Specialist = "";
 
     private void CreateUsers()
     {
         if (Name != "" && Surname != "" && Email != "" && Login != "" && Password != "" && Password2 != "" && Password == Password2)
         {
-            User user = new User(Name, Surname, Email, Password, Login);
+            User user = new User(Name, Surname, Email, Password, Login,Specialist);
             UserService.user = user;
             UserService.authorizationCheck = true;
             MongoExamples.AddToDB(user);
