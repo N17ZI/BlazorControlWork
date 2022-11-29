@@ -62,6 +62,17 @@
             if (Password == user.Password)
             {
                 UserService.user = user;
+
+                UserService.login = UserService.user.Login;
+                UserService.INN = UserService.user.INN;
+                UserService.OGRN = UserService.user.OGRN;
+                UserService.Org = UserService.user.Org;
+                UserService.Phone = UserService.user.Phone;
+                UserService.role = UserService.user.Specialist;
+                UserService.email = UserService.user.Email;
+                UserService.name = UserService.user.Name;
+                UserService.surname = UserService.user.Surname;
+
                 UserService.authorizationCheck = true;
                 Navigation.NavigateTo("/profil");
             }

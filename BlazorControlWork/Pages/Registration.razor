@@ -78,15 +78,27 @@
     private string Password2 = "";
     private string Specialist = "";
 
+
     private void CreateUsers()
     {
+        
+        UserService.login = "";
+        UserService.Org= "";
+        UserService.OGRN= "";
+        UserService.Phone= "";
+        UserService.INN= "";
+        UserService.name= "";
+        UserService.surname= "";
+        UserService.email= "";
+        UserService.role= "";
+
         if (Name != "" && Surname != "" && Email != "" && Login != "" && Password != "" && Password2 != "" && Password == Password2)
         {
-            User user = new User(Name, Surname, Email, Password, Login,Specialist);
+            User user = new User(Name, Surname, Email, Password, Login,Specialist,"",
+            "","","");
             UserService.user = user;
-            UserService.authorizationCheck = true;
             MongoExamples.AddToDB(user);
-            NavigationManager.NavigateTo("/profil");
+            NavigationManager.NavigateTo("/authorization");
         }
     }
 }

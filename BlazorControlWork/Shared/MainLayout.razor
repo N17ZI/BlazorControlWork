@@ -14,13 +14,14 @@
         <div class="top-row px-4">
             @if (!UserService.authorizationCheck)
             {
-                <a href="authorization">Authorization</a>
-                <a href="registration">Registration</a>
+                <a href="authorization">Sign in</a>
+                <a href="registration">Register</a>
             }
             else
             {
-                <p>Hello,<a href="profil">@UserService.user.Name @UserService.user.Surname</a></p>
-                <a href="/" @onclick="LogOut">Log out</a>
+                <ruby>Hello,<a href="profil">@UserService.user.Name @UserService.user.Surname</a></ruby>
+                <ruby><a href="/" @onclick="LogOut">Log out</a></ruby>
+                
             }
             
         </div>
