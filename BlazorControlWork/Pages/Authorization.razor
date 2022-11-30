@@ -1,4 +1,5 @@
-﻿@page "/authorization"
+﻿@using BlazorControlWork.Service
+@page "/authorization"
 @inject NavigationManager Navigation
 @inject UserService UserService
 @using BlazorControlWork.Data
@@ -12,7 +13,12 @@
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-
+                    @if (CheckError)
+                    {
+                        <div class="layer1">
+                            <h6>@strError</h6>
+                        </div>
+                    }
               <form>
                 <div class="form-outline mb-4">
                   <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind="@Login" />
@@ -39,12 +45,7 @@
   </div>
 </section>
 
-@if (CheckError)
-{
-    <div class="layer1">
-        <h6>@strError</h6>
-    </div>
-}
+
 
 
 @code {

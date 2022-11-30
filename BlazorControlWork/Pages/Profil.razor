@@ -1,10 +1,14 @@
 ﻿@page "/profil"
 @using BlazorControlWork.Data
+@using BlazorInputMask
 @using Microsoft.AspNetCore.Authentication.Cookies;
 @using System.Security.Claims;
 @using Microsoft.AspNetCore.Authentication;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Http
+@using BlazorControlWork.Service
+@using MudBlazor
+
 @inject UserService UserService
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Environment
@@ -68,7 +72,10 @@ color:#69707a;
     padding-right: 0;
     margin-left: 1rem;
     margin-right: 1rem;
+
+
 }
+
 </style>
 <div class="container-xl px-4 mt-4">
     <label>@strException</label>
@@ -84,11 +91,19 @@ color:#69707a;
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    
+                    @if (UserService.user.pathImg != string.Empty)
+                    {
+                        <img src="@UserService.user.pathImg" class="fit-picture" />
+                    }
+                    else
+                    {
+                        <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    }
                     <!-- Profile picture help block-->
                     <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                     <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="button" ><InputFile OnChange="@LoadFiles"/></button>
+                    <button class="btn btn-primary" type="button"><InputFile OnChange="@LoadFiles"/></button>
                 </div>
             </div>
         </div>
@@ -116,45 +131,49 @@ color:#69707a;
                                 <input class="form-control" id="inputLastName" name="surname" type="text" placeholder="Enter your last name" @bind-value="surname">
                             </div>
                         </div>
-                        <!-- Form Row        -->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (organization name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" @bind-value="Org">
-                            </div>
-                            <!-- Form Group (location)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputOGRN">OGRN</label>
-                                <input class="form-control" id="inputOGRN" type="text" name="ogrn" placeholder="Enter your location" @bind-value="OGRN">
-                            </div>
-                        </div>
-                        <!-- Form Group ( email address )-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Email address</label>
                             <input class="form-control" id="inputEmailAddress" name="email" type="email" placeholder="Enter your email address" @bind-value="email">
                         </div>
-                        <!-- Form Row-->
-                        <div class="row gx-3 mb-3">
+                         <EditForm Model="UserService">
                             <!-- Form Group ( phone number )-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" type="tel" placeholder="Enter your phone number" @bind-value="phone">
+@*                                <input class="form-control" id="inputPhone" type="tel" placeholder="Enter your phone number" data-mask="00.00.00.00.00" @bind-value="phone">*@
+                                <InputMask @ref="mask" id="test" @bind-Value="phone" class="form-control" data-mask="+{7}(000)000-00-00"  placeholder="Enter your phone number"
+                                validateOnKeyPress="false" returnRawValue="true"></InputMask>
                             </div>
-                            <!-- Form Group (birthday)-->
+                          </EditForm>
+                        <!-- Form Row        -->
+                        @if (UserService.role == "Застройщик" || UserService.role == "Проектировщик")
+                        {
+                            <div class="row gx-3 mb-3">
+                                <!-- Form Group (organization name)-->
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Your INN</label>
-                                <input class="form-control" id="inputPhone" type="tel" name="INN" placeholder="Enter your INN" @bind-value="INN">
+                                    <label class="small mb-1" for="inputOrgName">Organization name</label>
+                                    <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" @bind-value="Org">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="inputOrgName">КПП</label>
+                                    <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your ККП" @bind-value="kpp">
+                                </div>
+                                <!-- Form Group (location)-->
+                            <div class="col-md-6">
+                                    <label class="small mb-1" for="inputOGRN">OGRN</label>
+                                    <input class="form-control" id="inputOGRN" type="text" name="ogrn" placeholder="Enter your location" @bind-value="OGRN">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="inputPhone">Your INN</label>
+                                    <input class="form-control" id="inputPhone" type="tel" name="INN" placeholder="Enter your INN" @bind-value="INN" min="10" max="10">
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group ( INN )-->
-
-                            <!-- Form Group ( Special Role )-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputBirthday">Your Special Role</label>
-                                <input class="form-control" id="inputBirthday" type="text" name="Role" placeholder="Enter your Role" @bind-value="role">
+                                <input class="form-control" id="inputBirthday" type="text" name="Role" placeholder="Enter your Role" @bind-value="role" readonly="readonly">
                             </div>
+                            <ComponentDownloadFile></ComponentDownloadFile>
                         </div>
                         <!-- Save changes button-->
                         <button class="btn btn-primary" @onclick="SaveChanges" type="button">Save changes</button>
@@ -166,14 +185,7 @@ color:#69707a;
     </div>
 </div>
 <div>
-    @if (UserService.user.pathImg != string.Empty)
-    {
-        <img src="@UserService.user.pathImg" class="fit-picture" />
-    }
-    else
-    {
-        <img src="@srcPath" class="fit-picture" />
-    }
+
     @*<br />
     <InputFile OnChange="@LoadFiles"/>
     <br />*@
@@ -182,6 +194,9 @@ color:#69707a;
 
 
 @code {
+    InputMask mask { get; set; }
+    string rawValue { get; set; }
+    string kpp = "";
     string Login = UserService.login;
     string Org = UserService.Org;
     string OGRN= UserService.OGRN;
@@ -189,7 +204,7 @@ color:#69707a;
     string INN = UserService.INN;
     string name = UserService.name;
     string surname = UserService.surname;
-    string email = UserService.email;
+    public string email = UserService.email;
     string role = UserService.role;
 
     string strException;
@@ -202,8 +217,9 @@ color:#69707a;
     }
     private void SaveChanges()
     {
-        User user = new User(name,surname,email,"111",Login,role,INN,OGRN,phone,Org);
-        MongoExamples.ReplaceByName(Login,user);
+        rawValue = mask.returnValue;
+        User user = new User(name,surname,email,UserService.login,Login,role,INN,OGRN,phone,Org);
+        MongoExamples.ReplaceByName(Login,user); 
     }
 
     private async Task LoadFiles(InputFileChangeEventArgs e)

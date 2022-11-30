@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
+
 namespace BlazorControlWork.Data
 {
     public class User
@@ -23,7 +25,8 @@ namespace BlazorControlWork.Data
         public string Phone { get; set; }
         [BsonIgnoreIfNull]
         public string Org { get; set; }
-
+        [BsonIgnoreIfNull]
+        public byte[] Attachment { get; set; }
 
         public User(string name, string surname, string email, string password, string login, string specialist,
             string iNN,string oGRN,string phone,string org)

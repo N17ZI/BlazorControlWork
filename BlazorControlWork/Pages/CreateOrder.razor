@@ -1,0 +1,71 @@
+﻿@using BlazorControlWork.Data
+@using BlazorControlWork.Service
+@inject NavigationManager NavigationManager
+
+@page "/CreateOrder"
+
+<h3>CreateOrder</h3>
+<div>
+<form>
+	<div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Название задания</label>
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="@Name"/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Описание задания</label>
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="@Desc"/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Документы</label>
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="@Docs"/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Какие документы обязательные?</label>
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="@Required"/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Название задания</label>
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="@Price"/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Создатель</label>
+        <input type="text" id="form3Example1cg" class="form-control form-control-lg" @bind-value="@Creator" readonly="readonly"/>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form3Example1cg">Категория задания</label>
+        <p>
+        <select name="sss" type="text" @bind="@Categ">
+                <option text="Water">Water</option>
+                <option text="Gas">Gas</option>
+        </select>
+        </p>
+    </div>
+</form>
+<button class="btn btn-primary" @onclick="@CreateMission">Create</button>
+</div>
+@code {
+    private string Name = "";
+    private string Desc = "";
+    private string Required = "";
+    private string Price = "";
+    private string Categ = "";  
+    private string Docs = "";
+    private string Creator = UserService.login;
+
+
+    private void CreateMission()
+    {
+    if (Name != "" && Desc != "" && Required != "" && Price != "" && Categ != "")
+        {
+            Orders orders = new Orders(Name, Desc, Docs, Required, Categ,Creator);
+            MongoExamples.AddToMission(orders);
+            NavigationManager.NavigateTo("/Order");
+        }
+}
+}

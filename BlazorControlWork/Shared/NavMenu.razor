@@ -1,4 +1,5 @@
 ﻿@using BlazorControlWork.Data
+@using BlazorControlWork.Service
 @inject UserService UserService
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -25,6 +26,11 @@
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Order">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Orders
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="CreateOrder">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Create Own Mission
             </NavLink>
         </div>
         

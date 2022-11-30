@@ -1,6 +1,5 @@
 ﻿@using BlazorControlWork.Data
 @inject IWebHostEnvironment Environment
-<input type="number" @bind="@countFiles"></input>
 <InputFile OnChange="@LoadFiles" multiple />
 @if (isLoading)
 {
@@ -32,7 +31,7 @@ else
 }
 
 @code {
-    int countFiles;
+    int countFiles = 12;
     private List<IBrowserFile> loadedFiles = new();
     private bool isLoading;
 

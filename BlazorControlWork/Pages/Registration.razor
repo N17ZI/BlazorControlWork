@@ -1,5 +1,6 @@
 ﻿@page "/registration"
 @using BlazorControlWork.Data
+@using BlazorControlWork.Service
 @inject NavigationManager NavigationManager
 @inject UserService UserService
   <section class="vh-100 bg-image"
@@ -43,8 +44,8 @@
                   <label class="form-label" for="form3Example4cdg">Repeat your password</label>
                 </div>
 
-                  <label class="form-label" for="form3Example3cg">Your Email</label>
                   <p>
+                  <label class="form-label" for="form3Example3cg">Your Special role</label>
                   <select name="sss" type="text" @bind="Specialist">
                             <option text="Проектировщик">Проектировщик</option>
                             <option text="Застройщик">Застройщик</option>
@@ -81,7 +82,6 @@
 
     private void CreateUsers()
     {
-        
         UserService.login = "";
         UserService.Org= "";
         UserService.OGRN= "";
@@ -91,6 +91,7 @@
         UserService.surname= "";
         UserService.email= "";
         UserService.role= "";
+
 
         if (Name != "" && Surname != "" && Email != "" && Login != "" && Password != "" && Password2 != "" && Password == Password2)
         {

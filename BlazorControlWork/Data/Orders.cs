@@ -12,18 +12,34 @@ namespace BlazorControlWork.Data
         [BsonIgnoreIfNull]
         public string Docs { get; set; }
         [BsonIgnoreIfNull]
-        public bool Required { get; set; }
+        public string Required { get; set; }
         [BsonIgnoreIfNull]
         public double price { get; set; }
         public string Category { get; set; }
+        [BsonIgnoreIfNull]
+
+        public string Developer { get; set; }
+        public string Creator { get; set; }
 
 
-        public Orders(string name, string description, string docs, bool required)
+        public Orders(string name, string description, string docs, string required,string category,string creator)
         {
             Name = name;
             Description = description;
             Docs = docs;
             Required = required;
+            Category = category;
+            Creator = creator;
+        }
+        public Orders(string name, string description, string docs, string required, string category, string creator,string developer)
+        {
+            Name = name;
+            Description = description;
+            Docs = docs;
+            Required = required;
+            Category = category;
+            Creator = creator;
+            Developer = developer;
         }
     }
 }

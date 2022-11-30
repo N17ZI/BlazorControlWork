@@ -1,7 +1,10 @@
-﻿namespace BlazorControlWork.Data
+﻿using BlazorControlWork.IService;
+
+namespace BlazorControlWork.Service
 {
     public class UserService
     {
+        
         public User user { get; set; }
 
         public static string login;
@@ -14,5 +17,7 @@
         public static string surname;
         public static string name;
         public bool authorizationCheck { get; set; }
+
+        
     }
 }

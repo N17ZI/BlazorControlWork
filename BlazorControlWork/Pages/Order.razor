@@ -1,0 +1,51 @@
+﻿@using BlazorControlWork.Data
+@using static System.Net.WebRequestMethods
+@using MongoDB.Driver
+@using MongoDB.Driver.GridFS
+@using BlazorControlWork.Service
+@inject UserService UserService
+
+@page "/Order"
+ <div class="row">
+    <div class="col-md-6 offset-md-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Docs</th>
+                    <th>Required</th>
+                    <th>price</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in list)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Docs</td>
+                    <td>@item.Required</td>
+                    <td>@item.price</td>
+                    <td>@item.Category</td>
+                    </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    private List<Orders> list = new List<Orders>();
+    protected override void OnInitialized()
+    {
+        var client = new MongoClient();
+        var database = client.GetDatabase("CurrentlyDB");
+        var collection = database.GetCollection<Orders>("Orders");
+        list = collection.Find(x => true).ToList();
+    }
+    private void Setworker()
+    {
+        
+    }
+}

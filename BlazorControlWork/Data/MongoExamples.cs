@@ -11,6 +11,13 @@ namespace BlazorControlWork.Data
             var collection = database.GetCollection<User>("TableUser");
             collection.InsertOne(user);
         }
+        public static void AddToMission(Orders orders)
+        {
+            var client = new MongoClient();
+            var database = client.GetDatabase("CurrentlyDB");
+            var collection = database.GetCollection<Orders>("Orders");
+            collection.InsertOne(orders);
+        }
         public static List<User> FindAll()
         {
             var client = new MongoClient();
@@ -42,6 +49,13 @@ namespace BlazorControlWork.Data
             var database = client.GetDatabase("CurrentlyDB");
             var collection = database.GetCollection<User>("TableUser");
             collection.DeleteOne(x => x.Login == login);
+        }
+        public static void ReplaceByNameMiss(string name, Orders orders)
+        {
+            var client = new MongoClient();
+            var database = client.GetDatabase("CurrentlyDB");
+            var collection = database.GetCollection<Orders>("Orders");
+            collection.ReplaceOne(x => x.Name == name, orders);
         }
     }
 }

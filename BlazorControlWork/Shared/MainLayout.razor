@@ -1,4 +1,5 @@
 ﻿@using BlazorControlWork.Data
+@using BlazorControlWork.Service
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject UserService UserService
@@ -14,12 +15,14 @@
         <div class="top-row px-4">
             @if (!UserService.authorizationCheck)
             {
+                <ruby>
                 <a href="authorization">Sign in</a>
-                <a href="registration">Register</a>
+                <a href="registration">Register</a></ruby>
             }
             else
             {
                 <ruby>Hello,<a href="profil">@UserService.user.Name @UserService.user.Surname</a></ruby>
+                <ruby><a href="MyOrder">My Orders</a></ruby>
                 <ruby><a href="/" @onclick="LogOut">Log out</a></ruby>
                 
             }
